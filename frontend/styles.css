@@ -86,7 +86,7 @@ body {
     box-shadow: 5px 5px 16px -1px rgba(0,0,0,0.48);
     border-radius: 10px; 
     border: none;
-    padding: 10px;
+    padding: 5px;
 }
 
 #resultdiv{
@@ -110,9 +110,5 @@ body {
     border-radius: 10px; 
     margin: 0 1vh 0 0;
     background-color: #FFFFFF;
-}
-
-.recording {
-    background-color: #16A085;
 }
 

@@ -33,6 +33,7 @@ let refresh = () => {
         let el = document.createElement("span");
         el.innerText = arr[i] + " ";
         if(correct[i] !== -1) el.style.color = (correct[i] === 0 ? 'red' : 'green');
+        if(pos == i) el.style.textDecoration = 'underline';
         paragraph.appendChild(el);
     }
 
@@ -40,7 +41,6 @@ let refresh = () => {
 }
 
 studyButton.addEventListener("click", () => { //Button Clicked
-    resultDiv.innerHTML = "";
     if (!init) {
         val = [];
         let text = textInput.value;
@@ -59,17 +59,6 @@ studyButton.addEventListener("click", () => { //Button Clicked
             );
 
         correct = Array(speechWords.length).fill(-1);
-
-        var grammar = '#JSGF V1.0; grammar speechWords; public <word> = ' + speechWords.join(' | ') + ' ;';
-        var recognition = new SpeechRecognition();
-        var speechRecognitionList = new SpeechGrammarList();
-        speechRecognitionList.addFromString(grammar, 1);
-
-        recognition.grammars = speechRecognitionList;
-
-        recognition.lang = 'en-US';
-        recognition.interimResults = false;
-        recognition.maxAlternatives = 1;
 
         for (let i = 0; i < arr.length; i++) {
             val.push(i);
@@ -92,20 +81,74 @@ studyButton.addEventListener("click", () => { //Button Clicked
             let el = document.createElement("span");
             el.innerText = arr[i] + " ";
             if(correct[i] !== -1) el.style.color = (correct[i] === 0 ? 'red' : 'green');
+            if(pos == i) el.style.textDecoration = 'underline';
             paragraph.appendChild(el);
         }
 
         resultDiv.appendChild(paragraph);
         init = true;
     } else if (init) {
+        pos = 0;
         k++;
+        for (let i = 0; i < k; i++) {
+            blankWords.push(arr[val[0]]);
+            arr.splice(val[0], 1, "█████");
+            val.shift();
+        }
+        correct = correct.fill(-1);
         refresh();
     }
 });
 
-var grammar = '#JSGF V1.0; grammar speechWords; public <word> = ' + speechWords.join(' | ') + ' ;';
-var recognition = new SpeechRecognition();
-var speechRecognitionList = new SpeechGrammarList();
+let initR = () => {
+    grammar = '#JSGF V1.0; grammar speechWords; public <word> = ' + speechWords.join(' | ') + ' ;';
+    recognition = new SpeechRecognition();
+    speechRecognitionList = new SpeechGrammarList();
+    speechRecognitionList.addFromString(grammar, 1);
+
+    recognition.grammars = speechRecognitionList;
+
+    recognition.lang = 'en-US';
+    recognition.interimResults = true;
+    recognition.maxAlternatives = 1;
+
+    recognition.onresult = function (event) {
+        console.log(event);
+        let result = event.results[event.resultIndex];
+        if (result.isFinal) {
+            speech = result[0].transcript;
+            let speechSplit = [];
+            let temp;
+            for (let i = 0; i < speech.length; i++) {
+                if (speech[i] == " ") {
+                    speechSplit.push(temp);
+                    temp = "";
+                } else {
+                    temp = temp + speech[i];
+                }
+            }
+        } else if (result[0].confidence >= 0.5) { // interim result
+            if(result[0].transcript.split(/\s+/gm).length > pos){ // THERE'S A NEW WORD!!!!!!
+                let words = result[0].transcript.split(/\s+/gm);
+                let last = words[words.length-1];
+                console.log(words, speechWords[pos]);
+                while(words.length > pos){
+                    if(speechWords[pos].toLowerCase() === words[pos].toLowerCase()){
+                        correct[pos] = 1;
+                    } else {
+                        correct[pos] = 0;
+                    }
+                    pos++;
+                }
+                refresh();
+            }
+        }
+    }
+}
+
+grammar = '#JSGF V1.0; grammar speechWords; public <word> = ' + speechWords.join(' | ') + ' ;';
+recognition = new SpeechRecognition();
+speechRecognitionList = new SpeechGrammarList();
 speechRecognitionList.addFromString(grammar, 1);
 
 recognition.grammars = speechRecognitionList;
@@ -115,7 +158,7 @@ recognition.interimResults = true;
 recognition.maxAlternatives = 1;
 
 recordButton.addEventListener("click", () => {
-    recordButton.classList.toggle('recording');
+    recordButton.style.backgroundColor = recordButton.style.backgroundColor ? '' : '#16A085';
     if (init && !isRecording) {
         isRecording = true;
         
@@ -125,12 +168,14 @@ recordButton.addEventListener("click", () => {
         console.log("record done")
         recognition.stop();
         isRecording = false;
+        initR();
     }
 });
 
 var speech = [];
 
 recognition.onresult = function (event) {
+
     let result = event.results[event.resultIndex];
     if (result.isFinal) {
         speech = result[0].transcript;
@@ -144,34 +189,19 @@ recognition.onresult = function (event) {
                 temp = temp + speech[i];
             }
         }
-        console.log(compare(speechSplit, speechWords) + "%");
     } else if (result[0].confidence >= 0.5) { // interim result
         if(result[0].transcript.split(/\s+/gm).length > pos){ // THERE'S A NEW WORD!!!!!!
             let words = result[0].transcript.split(/\s+/gm);
-            let last = words[words.length-1];
-            if(speechWords[pos].toLowerCase() === last.toLowerCase()){
-                correct[pos] = 1;
-            } else {
-                correct[pos] = 0;
+            console.log(words, speechWords[pos]);
+            while(words.length > pos){
+                if(speechWords[pos].toLowerCase() === words[pos].toLowerCase()){
+                    correct[pos] = 1;
+                } else {
+                    correct[pos] = 0;
+                }
+                pos++;
             }
-            pos++;
             refresh();
         }
     }
-}
-
-function compare(arr1, arr2) {
-    let total = Math.max(arr1.length, arr2.length);
-    let amount = 0;
-
-    for (let i = 0; i < Math.min(arr1.length, arr2.length); i++) {
-        total = total + 1;
-        if (arr1[i].toLowerCase() == arr2[i].toLowerCase()) {
-            amount = amount + 1;
-        }
-
-        console.log(arr1[i] + " " + arr2[i]);
-    }
-
-    return (amount / total) * 100;
 }
