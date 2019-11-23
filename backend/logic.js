@@ -11,19 +11,16 @@ let stopRemove = str => str.split(/\s+/gm).filter(e => !stopwords.includes(e)).j
 
 
 /*
- * Returns a similarity "score", from 0 to 100.
+ * Turns a note into a list of tokens.
  * @param first: The first piece of notes, in text.
- * @param second: The second notes, in text.
- * PLEASE NOTE THAT THIS FUNCTION WILL RETURN DIFFERENT RESULTS IF YOU PUT THE ARGUMENTS IN A DIFFERENT ORDER.
- * Put the user's thing in first.
  */
-let textCompare = (first, second) => {
+let tokens = (first) => {
     if(typeof first !== 'string' || typeof second !== 'string'){
-        return ({ error: "wrong data type" });
+        return Promise.reject("wrong data type");
     }
     /* Let's be real, the user's not putting in more than 25k words. */
-    if(first.length / 5000 > 25 || second.length / 5000 > 25){
-        return ({ error: "too long" });
+    if(first.length / 5000 > 25){
+        return Promise.reject("too long");
     }
     // First one.
     let params = {
@@ -35,24 +32,20 @@ let textCompare = (first, second) => {
         .then(data => {
             if(data.ErrorList.length) return Promise.reject({ error: data.ErrorList.map(e => "Index " + e.Index + " suffered error " + e.ErrorCode + ":" + e.ErrorMessage ) });
             // Concats into a list of unique tokens.
-            return [... new Set(data.ResultList.reduce((p, n) => p.concat(n.KeyPhrases.filter(x => x.Score >= 0.5).map(x => x.Text)), []))];
-        }).then(parsed => {
-            // Second one.
-            return comprehend.batchDetectKeyPhrases({
-                LanguageCode: "en",
-                TextList: Array(Math.ceil(second.length / 5000)).fill('').map((e, i) => second.substr(i, 5000))
-            }).promise()
-                .then(data => {
-                    if(data.ErrorList.length) return Promise.reject({ error: dataErrorList.map(e => JSON.stringify(e)).join(',') });
-                    // Unique tokens.
-                    return [... new Set(data.ResultList.reduce((p, n) => p.concat(n.KeyPhrases.filter(x => x.Score >= 0.5).map(x => x.Text)), []))];
-                }).then(secparsed => ({ first: parsed.map(e => stopRemove(e)), second: secparsed.map(e => stopRemove(e)) }));
-        }).then(data => {
-            // Find similar tokens.
-            let sim = data.first.filter(e => data.second.includes(e));
-            // The final value - percentage similarity ( multiplied by 100.)
-            return { similarity: Math.floor((100 * (sim.length))/(data.second.length)) };
+            return [... new Set(data.ResultList.reduce((p, n) => p.concat(n.KeyPhrases.filter(x => x.Score >= 0.5).map(x => stopRemove(x.Text))), []))];
         });
+};
+
+/*
+ * Compares two token lists.
+ * @param user: USER tokens.
+ * @param other: OTHER tokens.
+ */
+let tokenCompare = (user, other) => {
+    // Find similar tokens.
+    let sim = user.filter(e => other.includes(e));
+    // The final value - percentage similarity ( multiplied by 100.)
+    return Math.floor((100 * (sim.length))/(other.length));
 };
 
 let ocr = img => {
@@ -60,10 +53,8 @@ let ocr = img => {
 };
 
 module.exports = {
-    compareNotes: textCompare,
-    ocr: ocr
+    tokenize: tokens,
+    ocr: ocr,
+    tokenCompare: tokenCompare
 };
 
-/* Test code */
-textCompare(`p-adic numbers were first described by Kurt Hensel in 1897, though, with hindsight, some of Ernst Kummer's earlier work can be interpreted as implicitly using p-adic numbers. The p-adic numbers were motivated primarily by an attempt to bring the ideas and techniques of power series methods into number theory. Their influence now extends far beyond this. For example, the field of p-adic analysis essentially provides an alternative form of calculus.`,
-`In mathematics, the p-adic number system for any prime number p extends the ordinary arithmetic of the rational numbers in a different way from the extension of the rational number system to the real and complex number systems. The extension is achieved by an alternative interpretation of the concept of "closeness" or absolute value. In particular, p-adic numbers are considered to be close when their difference is divisible by a high power of p: the higher the power, the closer they are. This property enables p-adic numbers to encode congruence information in a way that turns out to have powerful applications in number theory – including, for example, in the famous proof of Fermat's Last Theorem by Andrew Wiles.`).then(console.log);
