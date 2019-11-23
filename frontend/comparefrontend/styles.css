@@ -4,16 +4,16 @@ body {
     margin: 0 !important;  
     padding: 0 !important;
     scroll-behavior: smooth;
-    background-color: #DEDEDE;
+    background-color: #FAFAFA;
     user-select: none !important;
     font-family: 'Karla', sans-serif !important;
-    color: #484848;
+    color: #000000;
 }
 
 .navbar{
     position: absolute;
     display: flex;
-    background-color: #16A085;
+    background-image: linear-gradient(#EEEEEE, #EFEFEF);
     left: 0;
     right: 0;
     top: 0;
@@ -21,38 +21,21 @@ body {
     align-items: center;
     z-index: -1;
     box-shadow: rgba(0, 0, 0, 0.15) 0px 8px 12px;
-    padding: 20px 0 20px 0;
+    padding: 10px 0 10px 0;
   }
   
 .navbar-elements{
     display: flex;
     flex-direction: column;
-    width: 98vw;
+    width: 90vw;
 }
   
 .logo {
-    color: #FFFFFF;
-    opacity: 0.8;
-    font-size: 1.8em;
+    color: #000000;
+    font-size: 2.5em;
     font-weight: 500;
     text-decoration: none;
     left: 0;
-}
-
-.mainholder{
-    justify-content: center;
-    align-items: center;
-}
-
-.card{
-    position: relative;
-    height: auto;
-    width: 98vw;
-    background-color: #F1F1F1;
-    border-radius: 30px;
-    left: 1vw;
-    right: 1vw;
-    box-shadow: 5px 5px 16px -1px rgba(0,0,0,0.48);
 }
 
 #sectionheader{
@@ -71,48 +54,25 @@ body {
 #mainsection{
     display: flex;
     flex-direction: column;
+    width: 60vw;
     margin-left: auto;
     margin-right: auto;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 20vh;
-    width: 80vw;
 }
 
 #textinput {
     font-family: 'Karla', sans-serif !important;
     resize: none;
     height: 20vh;
-    width: 40vw;
+    width: 50vw;
     font-size: 1em;
-    box-shadow: 5px 5px 16px -1px rgba(0,0,0,0.48);
-    border-radius: 10px; 
-    border: none;
-    padding: 5px;
 }
 
 #resultdiv{
-    margin-top: 10vh;
+    margin-top: 20vh;
     justify-content: center;
     align-items: center;
     text-align: center;
-    margin-bottom: 10vh;
 }
-
-.buttonrow{
-    display: flex;
-    flex-direction: row;
-    margin-top: 1vh;
-}
-
-#studybutton, #recordbutton {
-    height: 5vh;
-    width: 14vw;
-    padding: 0;
-    border-radius: 10px; 
-    margin: 0 1vh 0 0;
-    background-color: #FFFFFF;
-}
-
-.recording {
-    background-color: #16A085;
-}
-
