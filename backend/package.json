@@ -1,0 +1,13 @@
+{
+  "name": "memor-backend",
+  "version": "0.0.1",
+  "description": "none",
+  "main": "app.js",
+  "author": "me",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "aws-sdk": "^2.578.0",
+    "dotenv": "^8.2.0"
+  }
+}
