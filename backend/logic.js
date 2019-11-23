@@ -1,7 +1,9 @@
 require('dotenv').config({path: __dirname + '/.env'});
 let AWS = require('aws-sdk');
-
+let vision = require('@google-cloud/vision');
+let vclient = new vision.ImageAnnotatorClient();
 let comprehend = new AWS.Comprehend();
+let fs = require('fs');
 
 
 // shut up
@@ -15,7 +17,8 @@ let stopRemove = str => str.split(/\s+/gm).filter(e => !stopwords.includes(e)).j
  * @param first: The first piece of notes, in text.
  */
 let tokens = (first) => {
-    if(typeof first !== 'string' || typeof second !== 'string'){
+    console.log(first, typeof first);
+    if(typeof first !== 'string'){
         return Promise.reject("wrong data type");
     }
     /* Let's be real, the user's not putting in more than 25k words. */
@@ -48,8 +51,15 @@ let tokenCompare = (user, other) => {
     return Math.floor((100 * (sim.length))/(other.length));
 };
 
-let ocr = img => {
-// TODO: Implement
+/*
+ * Returns the list of text objects in the encoded image.
+ * @param encoded: a base64-encoded image.
+ */
+let ocr = encoded => {
+    return vclient.annotateImage({ 
+        image: { content: Buffer.from(encoded, 'base64') },
+        features: [{ type: 'TEXT_DETECTION' }]
+    }).then(obj => obj[0].textAnnotations);
 };
 
 module.exports = {
@@ -58,3 +68,5 @@ module.exports = {
     tokenCompare: tokenCompare
 };
 
+// test code
+ocr(fs.readFileSync('./testimg.jpg').toString('base64'));
