@@ -1,6 +1,5 @@
 let textInput = document.getElementById("textinput");
 let studyButton = document.getElementById("studybutton");
-
 let resultDiv = document.getElementById("resultdiv");
 
 let init = false;
@@ -19,6 +18,7 @@ studyButton.addEventListener("click", ()=>{ //Button Clicked
     if(!init){
         val = [];
         let text = textInput.value;
+        textInput.value = "";
     
         arr = text.split(" ");
 
@@ -33,7 +33,7 @@ studyButton.addEventListener("click", ()=>{ //Button Clicked
 
         for(let i = 0; i < k; i++){
             blankWords.push(arr[val[0]]);
-            arr.splice(val[0], 1, "_____");
+            arr.splice(val[0], 1, "█████");
             val.shift();
         }
     
@@ -48,7 +48,7 @@ studyButton.addEventListener("click", ()=>{ //Button Clicked
     
         for(let i = 0; i < k; i++){
             blankWords.push(arr[val[0]]);
-            arr.splice(val[0], 1, "_____");
+            arr.splice(val[0], 1, "█████");
             val.shift();
         }
     
