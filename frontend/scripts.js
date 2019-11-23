@@ -1,3 +1,16 @@
+const express = require('express');
+const app = express();
+const port = 3000;
+const path = require('path');
+const logic = require('./logic');
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname + '/notemem.html'));
+});
+
+app.listen(port, () => console.log(`App listening on ${port}`));
+
+
 let textInput = document.getElementById("textinput");
 let studyButton = document.getElementById("studybutton");
 
