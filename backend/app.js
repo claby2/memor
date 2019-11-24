@@ -9,12 +9,12 @@ app.use(express.json({ limit: "50mb" }));
 
 let db = JSON.parse(fs.readFileSync('./database.json'));
 
-// exit handlers
-let handleExit = () => fs.writeFileSync('./database.json', JSON.stringify(db));
-
-process.on('exit', handleExit);
-// C-c
-process.on('SIGINT', handleExit);
+//// exit handlers
+//let handleExit = () => fs.writeFile('./database.json', JSON.stringify(db), (err, out) => process.exit());
+//
+//process.on('exit', handleExit);
+//// C-c
+//process.on('SIGINT', handleExit);
 
 
 app.use(express.static('./../frontend'));
@@ -31,8 +31,11 @@ app.post('/api/submit', (req, res) => {
 
 app.get('/api/getTop5', (req, res) => {
     let { pid }  = req.query;
+    console.log(req.query);
     console.log(pid, db[pid]);
-    res.send(JSON.stringify(Object.entries(db).sort((a, b) => logic.tokenCompare(db[pid].tokens, a[1].tokens) - logic.tokenCompare(db[pid].tokens, b[1].tokens)).slice(0,5)));
+    let result = Object.entries(db).filter(x => x[1].author != db[pid].author);
+    result.sort((a, b) => logic.tokenCompare(db[pid].tokens, a[1].tokens) - logic.tokenCompare(db[pid].tokens, a[1].tokens));
+    res.send(JSON.stringify(result.filter(x => logic.tokenCompare(db[pid].tokens, x[1].tokens) >= 10).slice(0,5)));
 });
 
 app.post('/api/ocr', (req, res) => {

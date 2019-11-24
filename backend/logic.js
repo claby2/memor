@@ -45,8 +45,9 @@ let tokens = (first) => {
  * @param other: OTHER tokens.
  */
 let tokenCompare = (user, other) => {
+    console.log(user, other);
     // Find similar tokens.
-    let sim = user.filter(e => other.includes(e));
+    let sim = user.filter(e => other.map(x => x.toLowerCase()).includes(e.toLowerCase()));
     // The final value - percentage similarity ( multiplied by 100.)
     return Math.floor((100 * (sim.length))/(other.length));
 };
@@ -75,3 +76,4 @@ module.exports = {
 };
 
 // test code
+tokens("Electricity is commonly used in everyday life to power common household utilities. Electricity has two qualities to it: voltage and amplitude, more commonly called volts and amps respectively. These qualities help determine how much power electricity can provide to utilities around the house.").then(console.log);
