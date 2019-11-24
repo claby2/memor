@@ -32,8 +32,10 @@ uploadButton.addEventListener("click", ()=>{
 function getResponse(pid){
     return fetch('http://localhost:3000/api/getTop5?pid=' + pid)
     .then(res=>res.json())
-    .then(data => data.forEach(info => {
+    .then(data => data.forEach(x => {
+        let info = x[1];
         let noteDiv = document.createElement('div');
+        noteDiv.className = 'note';
 
         let subjectEl = document.createElement('h3');
         let authorEl = document.createElement('h2');

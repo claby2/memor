@@ -36,7 +36,7 @@ app.get('/api/getTop5', (req, res) => {
 });
 
 app.post('/api/ocr', (req, res) => {
-    let encoded = req.body;
+    let encoded = req.body.pld;
     logic.ocr(encoded).then(data => res.send(JSON.stringify(data))).catch(err => res.status(500).send(JSON.stringify({ error: err })));
 });
 

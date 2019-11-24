@@ -3,6 +3,7 @@ let AWS = require('aws-sdk');
 let vision = require('@google-cloud/vision');
 let vclient = new vision.ImageAnnotatorClient();
 let comprehend = new AWS.Comprehend();
+let transcribe = new AWS.TranscribeService();
 let fs = require('fs');
 
 
@@ -17,7 +18,6 @@ let stopRemove = str => str.split(/\s+/gm).filter(e => !stopwords.includes(e)).j
  * @param first: The first piece of notes, in text.
  */
 let tokens = (first) => {
-    console.log(first, typeof first);
     if(typeof first !== 'string'){
         return Promise.reject("wrong data type");
     }
@@ -56,9 +56,15 @@ let tokenCompare = (user, other) => {
  * @param encoded: a base64-encoded image.
  */
 let ocr = encoded => {
+    fs.writeFileSync('test.jpg', Buffer.from(encoded, 'base64'));
     return vclient.annotateImage({ 
         image: { content: Buffer.from(encoded, 'base64') },
-        features: [{ type: 'TEXT_DETECTION' }]
+        features: [{ type: 'TEXT_DETECTION' }],
+        imageContext: {
+            languageHints: [
+                "en"
+            ]
+        }
     }).then(obj => obj[0].textAnnotations);
 };
 
@@ -69,4 +75,3 @@ module.exports = {
 };
 
 // test code
-ocr(fs.readFileSync('./testimg.jpg').toString('base64'));

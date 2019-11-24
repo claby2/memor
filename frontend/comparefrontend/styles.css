@@ -76,3 +76,8 @@ body {
     align-items: center;
     text-align: center;
 }
+
+.note {
+    border: 1px solid black;
+    padding: 0 1vw;
+}
