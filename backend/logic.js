@@ -1,7 +1,10 @@
 require('dotenv').config({path: __dirname + '/.env'});
 let AWS = require('aws-sdk');
-
+let vision = require('@google-cloud/vision');
+let vclient = new vision.ImageAnnotatorClient();
 let comprehend = new AWS.Comprehend();
+let transcribe = new AWS.TranscribeService();
+let fs = require('fs');
 
 
 // shut up
@@ -15,7 +18,7 @@ let stopRemove = str => str.split(/\s+/gm).filter(e => !stopwords.includes(e)).j
  * @param first: The first piece of notes, in text.
  */
 let tokens = (first) => {
-    if(typeof first !== 'string' || typeof second !== 'string'){
+    if(typeof first !== 'string'){
         return Promise.reject("wrong data type");
     }
     /* Let's be real, the user's not putting in more than 25k words. */
@@ -42,14 +45,28 @@ let tokens = (first) => {
  * @param other: OTHER tokens.
  */
 let tokenCompare = (user, other) => {
+    console.log(user, other);
     // Find similar tokens.
-    let sim = user.filter(e => other.includes(e));
+    let sim = user.filter(e => other.map(x => x.toLowerCase()).includes(e.toLowerCase()));
     // The final value - percentage similarity ( multiplied by 100.)
     return Math.floor((100 * (sim.length))/(other.length));
 };
 
-let ocr = img => {
-// TODO: Implement
+/*
+ * Returns the list of text objects in the encoded image.
+ * @param encoded: a base64-encoded image.
+ */
+let ocr = encoded => {
+    fs.writeFileSync('test.jpg', Buffer.from(encoded, 'base64'));
+    return vclient.annotateImage({ 
+        image: { content: Buffer.from(encoded, 'base64') },
+        features: [{ type: 'TEXT_DETECTION' }],
+        imageContext: {
+            languageHints: [
+                "en"
+            ]
+        }
+    }).then(obj => obj[0].textAnnotations);
 };
 
 module.exports = {
@@ -58,3 +75,5 @@ module.exports = {
     tokenCompare: tokenCompare
 };
 
+// test code
+tokens("Electricity is commonly used in everyday life to power common household utilities. Electricity has two qualities to it: voltage and amplitude, more commonly called volts and amps respectively. These qualities help determine how much power electricity can provide to utilities around the house.").then(console.log);

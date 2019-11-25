@@ -1,0 +1,146 @@
+{
+    "0e47c3e7-4464-4f17-a92a-3d68dda3c5cc": {
+        "author": "Maisey Roy",
+        "subject": "Cell Division",
+        "body": "Cell division is the process by which a parent cell divides into two or more daughter cells. Cell division usually occurs as part of a larger cell cycle.",
+        "tags": "Biology, Cells",
+        "tokens": [
+            "Cell division",
+            "process",
+            "parent cell",
+            "two daughter cells",
+            "part",
+            "larger cell cycle"
+        ]
+    },
+    "c76a9d91-603e-4188-8e85-6a376dba3733": {
+        "author": "Sophie Mccabe",
+        "subject": "Voltage",
+        "body": "Voltage, electric potential difference, electric pressure or electric tension is the difference in electric potential between two points. The difference in electric potential between two points in a static electric field is defined as the work needed per unit of charge to move a test charge between the two points.",
+        "tags": "Physics, Electricity",
+        "tokens": [
+            "Voltage",
+            "electric potential difference",
+            "electric pressure",
+            "electric tension",
+            "difference",
+            "electric potential",
+            "two points",
+            "The difference",
+            "static electric field",
+            "work",
+            "unit",
+            "charge",
+            "test charge"
+        ]
+    },
+    "6dd8784d-3ebc-4d54-8d3a-189e885ca1bb": {
+        "author": "Angus Gallegos",
+        "subject": "Ionic Bonding",
+        "body": "Ionic bonding is the complete transfer of valence electron(s) between atoms. It is a type of chemical bond that generates two oppositely charged ions. In ionic bonds, the metal loses electrons to become a positively charged cation, whereas the nonmetal accepts those electrons to become a negatively charged anion.",
+        "tags": "Chemistry, Bonds",
+        "tokens": [
+            "Ionic bonding",
+            "complete transfer",
+            "valence electron",
+            "atoms",
+            "It",
+            "type",
+            "chemical bond",
+            "two oppositely charged ions",
+            "ionic bonds",
+            "metal",
+            "electrons",
+            "positively charged cation",
+            "nonmetal",
+            "negatively charged anion"
+        ]
+    },
+    "98e966a4-0e06-4e50-b85b-3e6eebf51fb3": {
+        "author": "Sol Foster",
+        "tokens": [
+            "A covalent bond",
+            "molecular bond",
+            "chemical bond",
+            "sharing",
+            "electron pairs",
+            "atoms",
+            "These electron pairs",
+            "shared pairs bonding pairs",
+            "stable balance",
+            "attractive repulsive forces",
+            "electrons",
+            "covalent bonding"
+        ],
+        "subject": "Covalent Bonding",
+        "body": "A covalent bond, also called a molecular bond, is a chemical bond that involves the sharing of electron pairs between atoms. These electron pairs are known as shared pairs or bonding pairs, and the stable balance of attractive and repulsive forces between atoms, when they share electrons, is known as covalent bonding.",
+        "tags": "Chemistry, Bonds"
+    },
+    "4ffde77d-5c9e-4dc1-911c-871efaead36c": {
+        "author": "Abraham Valdez",
+        "subject": "Fiscal Policy",
+        "body": "Fiscal policy is the means by which a government adjusts its spending levels and tax rates to monitor and influence a nation's economy. It is the sister strategy to monetary policy through which a central bank influences a nation's money supply.",
+        "tags": "Economics, Macroeconomics",
+        "tokens": [
+            "A covalent bond",
+            "molecular bond",
+            "chemical bond",
+            "sharing",
+            "electron pairs",
+            "atoms",
+            "These electron pairs",
+            "shared pairs bonding pairs",
+            "stable balance",
+            "attractive repulsive forces",
+            "electrons",
+            "covalent bonding"
+        ]
+    },
+    "10340d44-fce5-462f-b58d-eb784cfb1eee": {
+        "author": "Maisey Roy",
+        "subject": "Cell Division",
+        "body": "Cell division is the process by which a parent cell divides into two or more daughter cells. Cell division usually occurs as part of a larger cell cycle.",
+        "tags": "Biology, Cells",
+        "tokens": [
+            "Cell division",
+            "process",
+            "parent cell",
+            "two daughter cells",
+            "part",
+            "larger cell cycle"
+        ]
+    },
+    "67cb8389-19a8-4f22-bd5a-e8180821f31e": {
+        "author": "Leo Lee",
+        "subject": "Linux man pages",
+        "body": "Linux man pages are critical to understand the function of utilities on your system. Common uses for man pages include: looking up Linux kernel syscalls, looking up shell utilities, and reading protocol implementation descriptions.",
+        "tags": "linux, man pages",
+        "tokens": [ "Linux man pages",
+  "function",
+  "utilities",
+  "system",
+  "Common uses",
+  "man pages",
+  "Linux kernel syscalls",
+  "shell utilities",
+  "protocol implementation descriptions" ]
+    },
+    "24885729-48e7-40cf-8f19-913965a47b4f": {
+        "author": "Vir Chaudhury",
+        "subject": "Electricity",
+        "body": "Electricity is commonly used in everyday life to power common household utilities. Electricity has two qualities to it: voltage and amplitude, more commonly called volts and amps respectively. These qualities help determine how much power electricity can provide to utilities around the house.",
+        "tags": "electricity",
+        "tokens": [ "Electricity",
+  "everyday life",
+  "power",
+  "common household utilities",
+  "two qualities",
+  "",
+  "voltage amplitude",
+  "volts amps",
+  "These qualities",
+  "power electricity",
+  "utilities",
+  "house" ]
+    }
+}
